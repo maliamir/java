@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>API Performance Trend</title>
+
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+        <style type="text/css">
+            
+            table {
+                border-collapse: collapse;
+            }
+            
+            table, th, td {
+                border: 1px solid black;
+            }
+
+            body {
+              font-family: 'Open Sans', sans-serif;
+            }
+            
+	</style>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script type="text/javascript">
+
+              function loadJSON() {
+              
+                  var restUrl = new String("http://localhost:8080/api-performance-trend/rest/trendReport/resultsJson");
+                  
+                  $.ajaxSetup({async:false, cache:false});
+                  var jqxhr = $.ajax({  url: restUrl, type: "GET", 
+                            success: function(response){
+                            }
+                         }
+                  );
+                  
+                  var response = { valid: jqxhr.statusText,  json: jqxhr.responseJSON };
+                  //alert(response.json["productName"]);      
+                  
+                  $.each(response.json.productVersions, 
+                         function () {
+                             $("#buildsDdl").append($("<option></option>").val(this).html(this));
+                         });
+
+                  $.each(response.json.testRecords, 
+                         function () {
+                             //$("#buildsDdl").append($("<option></option>").val(this['name']).html(this['name']));
+                             $("#testRecordsTbl").append("<tr>");
+                             $("#testRecordsTbl").append("<td>test</td>");
+                             $("#testRecordsTbl").append("</tr>");
+                         });
+
+              }
+                            
+        </script> 
+
+    </head>
+    
+    <body onload="javascript:loadJSON();">
+    
+         <select id="buildsDdl" name=buildsDdl""/> 
+         
+         <table id="testRecordsTbl" name="testRecordsTbl">
+         </table>
+         
+    </body>
+    
+</html>
