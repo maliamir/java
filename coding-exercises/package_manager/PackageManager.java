@@ -28,7 +28,16 @@ public class PackageManager {
      * @return Evaluated stack-name based on the provided details
      */
     public static String sort(int width, int height, int length, int mass) {
+        if (width <= 0 || height <= 0 || length <= 0 || mass <= 0)
+            throw new IllegalArgumentException("All inputs must be positive");
+
+        if (mass == 0)
+            throw new IllegalArgumentException("Mass cannot be ZERO");
+
         int volume = width * height * length;
+        if (volume == 0)
+            throw new IllegalArgumentException("Volume cannot be ZERO");
+
         boolean isBulky = (volume >= BULKY_VOLUME_THRESHOLD ||
                 width >= DIMENSION_THRESHOLD ||
                 height >= DIMENSION_THRESHOLD ||
@@ -55,7 +64,7 @@ public class PackageManager {
 
     public static void main(String[] args) {
         printAndAssertStackName(10, 10, 10, 10, STANDARD);
-        printAndAssertStackName(-200, -200, -200, -25, STANDARD);
+        printAndAssertStackName(58, 27, 15, 18, STANDARD);
 
         printAndAssertStackName(11, 12, 13, 21, SPECIAL);
         printAndAssertStackName(200, 10, 10, 10, SPECIAL);
