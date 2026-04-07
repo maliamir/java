@@ -30,10 +30,11 @@ The core logic is implemented in the `sort` function within the `PackageManager`
 ### Method Signature
 ```java
 public static String sort(int width, int height, int length, int mass)
+```
 
+### 💻 Usage
 
-## 💻 Usage
-
+```java
 // Standard Package
 PackageManager.sort(10, 10, 10, 10); // Returns "STANDARD"
 
@@ -42,11 +43,12 @@ PackageManager.sort(10, 10, 10, 25); // Returns "SPECIAL"
 
 // Bulky & Heavy Package (Rejected)
 PackageManager.sort(200, 200, 200, 30); // Returns "REJECTED"
+```
 
-
-## 🚦 Testing
+### 🚦 Testing
 The implementation includes built-in assertions to verify sorting accuracy. To execute the tests, run the class with the -ea (enable assertions) flag:
 
-Bash
+```Bash
 javac PackageManager.java
 java -ea PackageManager
+```
