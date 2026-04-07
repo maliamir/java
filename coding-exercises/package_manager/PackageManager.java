@@ -1,13 +1,32 @@
 public class PackageManager {
 
+    // Necessary constants for size and dimension thresolds
     private static final int BULKY_VOLUME_THRESHOLD = 1000000;
     private static final int DIMENSION_THRESHOLD = 150;
     private static final int HEAVY_MASS_THRESHOLD = 20;
 
+    // Necessary constants to depict Stack name
     private static final String STANDARD = "STANDARD";
     private static final String SPECIAL = "SPECIAL";
     private static final String REJECTED = "REJECTED";
 
+    /**
+     * Primary method to sort by evaluating stack-name based on the provided details.<br/>
+     * It first checks, a package is:<br/>
+     * - "Bulky" if its volume (Width × Height × Length) is &gt;= 1,000,000 cubic-cm OR if any single
+     * dimension is &gt;= 150 cm.<br/>
+     * - "Heavy" if its mass is &gt;= 20 kg.<br/><br/>
+     * Then it designate the package to the following stack based on:<br/>
+     * - **STANDARD**: standard packages (those that are not bulky or heavy) can be handled normally.<br/>
+     * - **SPECIAL**: packages that are either heavy or bulky can't be handled automatically.<br/>
+     * - **REJECTED**: packages that are **both** heavy and bulky are rejected.<br/><br/>
+     * Then returns the name of the stack where the package should go.
+     * @param width - Width of package.
+     * @param height - Height of package.
+     * @param length - Length of package.
+     * @param mass - Mass of package
+     * @return Evaluated stack-name based on the provided details
+     */
     public static String sort(int width, int height, int length, int mass) {
         int volume = width * height * length;
         boolean isBulky = (volume >= BULKY_VOLUME_THRESHOLD ||
@@ -25,15 +44,24 @@ public class PackageManager {
         }
     }
 
+    public static void printAndAssertStackName(int width, int height,
+                                               int length, int mass,
+                                               String expectedStackName) {
+        String stackName = sort(width, height, length, mass);
+        System.out.println(String.format("Expected Stack = %s; Actual Stack = %s",
+                expectedStackName, stackName));
+        assert expectedStackName.equals(stackName) : "Should be " + expectedStackName;
+    }
+
     public static void main(String[] args) {
-        assert STANDARD.equals(sort(10, 10, 10, 10)) : "Should be " + STANDARD;
-        assert STANDARD.equals(sort(-200, -200, -200, -25)) : "Should be " + STANDARD;
+        printAndAssertStackName(10, 10, 10, 10, STANDARD);
+        printAndAssertStackName(-200, -200, -200, -25, STANDARD);
 
-        assert SPECIAL.equals(sort(11, 12, 13, 21)) : "Should be " + SPECIAL + " (heavy)";
-        assert SPECIAL.equals(sort(200, 10, 10, 10)) : "Should be " + SPECIAL + " (bulky)";
+        printAndAssertStackName(11, 12, 13, 21, SPECIAL);
+        printAndAssertStackName(200, 10, 10, 10, SPECIAL);
 
-        assert REJECTED.equals(sort(100, 100, 100, 20)) : "Should be " + REJECTED;
-        assert REJECTED.equals(sort(200, 200, 200, 25)) : "Should be " + REJECTED;
+        printAndAssertStackName(100, 100, 100, 20, REJECTED);
+        printAndAssertStackName(200, 200, 200, 25, REJECTED);
     }
 
 }
